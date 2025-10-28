@@ -4,53 +4,35 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Reset tables and sequences so ids start from 1
-  // Postgres requires double quotes for mapped table names
+  // reset tables and sequences
   try {
-    await prisma.$executeRawUnsafe('\n      TRUNCATE TABLE "posts", "tasks", "users" RESTART IDENTITY CASCADE;\n    ');
+    await prisma.$executeRawUnsafe(
+      'TRUNCATE TABLE "posts", "tasks", "users" RESTART IDENTITY CASCADE;'
+    );
   } catch (e) {
-    console.warn('TRUNCATE failed, falling back to deleteMany()', e?.message);
     await prisma.post.deleteMany();
     await prisma.task.deleteMany();
     await prisma.user.deleteMany();
   }
 
   const usersData = [
-    {
-      email: "alice@test.com",
-      password: await bcrypt.hash("alice1234", 10),
-    },
-    {
-      email: "bob@example.com",
-      password: await bcrypt.hash("bob1234", 10),
-    },
-    {
-      email: "charlie@demo.com",
-      password: await bcrypt.hash("charlie1234", 10),
-      role: "ADMIN",
-    },
+    { email: "alice@test.com",   password: await bcrypt.hash("alice1234", 10) },
+    { email: "bob@example.com",  password: await bcrypt.hash("bob1234", 10) },
+    { email: "charlie@demo.com", password: await bcrypt.hash("charlie1234", 10), role: "ADMIN" },
   ];
+  await Promise.all(usersData.map(u => prisma.user.create({ data: u })));
 
-  await Promise.all(usersData.map((user) => prisma.user.create({ data: user })));
+  // three tasks, deterministic order
+  const tasksData = [
+    { title: "Buy groceries", completed: false }, // id = 1
+    { title: "Write report",  completed: true  }, // id = 2
+    { title: "Read a book",   completed: false }, // id = 3
+  ];
+  for (const t of tasksData) {
+    await prisma.task.create({ data: t });
+  }
 
-const tasksData = [
-  { title: "Buy groceries", completed: false }, // id = 1
-  { title: "Write report",  completed: true  }, // id = 2
-];
-
-for (const t of tasksData) {
-  await prisma.task.create({ data: t });
+  console.log("Seed complete: users and tasks created (ids 1..3).");
 }
 
-
-  console.log("Seed complete: users and tasks created");
-}
-
-main()
-  .catch((e) => {
-    console.error("Seed failed:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().finally(() => prisma.$disconnect());
