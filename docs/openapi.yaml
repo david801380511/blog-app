@@ -8,8 +8,26 @@ servers:
   - url: https://blog-app-1cvw.onrender.com
     description: Production server on Render
 paths:
+  /tasks:
+    get:
+      summary: List all tasks
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
   /tasks/{id}:
     $ref: ./paths/tasks.yaml#/~1tasks~1{id}
 components:
   schemas:
-    $ref: ./components/schemas.yaml
+    Task:
+      $ref: ./components/schemas/Task.yaml
+    ValidationError:
+      $ref: ./components/schemas/ValidationError.yaml
+  responses:
+    BadRequest:
+      $ref: ./components/responses/BadRequest.yaml
