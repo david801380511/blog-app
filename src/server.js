@@ -7,8 +7,6 @@ import taskRoutes from "./routes/taskRoutes.js";
 import swaggerUi from "swagger-ui-express";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "fs";
-import YAML from "js-yaml";
 import cors from "cors";
 import morgan from "morgan";
 
@@ -48,7 +46,11 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/posts", postRoutes);
-app.use("/api/tasks", taskRoutes);
+// Debug: prove /tasks mount is hit in Render logs
+app.use("/tasks", (req, _res, next) => {
+  console.log("HIT /tasks", req.method, req.path);
+  next();
+});
 app.use("/tasks", taskRoutes);
 
 // Serve bundled OpenAPI spec and Swagger UI
@@ -63,6 +65,11 @@ app.use(
     swaggerOptions: { url: "/bundled.yaml" },
     customSiteTitle: "API Docs",
   })
+);
+
+// Temporary bypass test route to validate routing in production
+app.get("/tasks-test", (_req, res) =>
+  res.json([{ id: 123, title: "test", completed: false }])
 );
 
 // JSON 404 for all unmatched routes (must be AFTER all routes and Swagger UI)
