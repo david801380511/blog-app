@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+  // Generate Prisma Client into the project source so you get a visible src/generated folder
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[]
+
+  @@map("categories")
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  title      String
+  content    String
+  categoryId Int?      @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id])
+  userId     Int?      @map("user_id")
+  user       User?     @relation(fields: [userId], references: [id])
+
+  @@map("posts")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+
+  posts Post[]
+
+  @@map("users")
+}
+
+// New Task model for Task API
+model Task {
+  id        Int     @id @default(autoincrement())
+  title     String
+  completed Boolean @default(false)
+
+  @@map("tasks")
+}

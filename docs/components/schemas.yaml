@@ -1,0 +1,32 @@
+Task:
+  type: object
+  required: [id, title, completed]
+  properties:
+    id:
+      type: integer
+      example: 1
+    title:
+      type: string
+      example: Buy groceries
+    completed:
+      type: boolean
+      example: false
+ValidationError:
+  type: object
+  required: [error, details]
+  properties:
+    error:
+      type: string
+      example: Validation failed
+    details:
+      type: array
+      items:
+        type: string
+      example: ["ID must be a number"]
+NotFoundError:
+  type: object
+  required: [error]
+  properties:
+    error:
+      type: string
+      example: Task not found

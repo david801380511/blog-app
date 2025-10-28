@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Task API
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /tasks/{id}:
+    get:
+      summary: Get a task by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: Task ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+components:
+  schemas:
+    Task:
+      type: object
+      required:
+        - id
+        - title
+        - completed
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Buy groceries
+        completed:
+          type: boolean
+          example: false
+    ValidationError:
+      type: object
+      required:
+        - error
+        - details
+      properties:
+        error:
+          type: string
+          example: Validation failed
+        details:
+          type: array
+          items:
+            type: string
+          example:
+            - ID must be a number
+    NotFoundError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: Task not found
