@@ -6,11 +6,17 @@
   "scripts": {
     "dev": "node src/server.js",
     "start": "node src/server.js",
+    "build": "npm run docs:bundle",
     "test": "NODE_ENV=test node -e \"import('./src/server.js').then(m=>console.log('app loaded'))\"",
     "prisma:generate": "prisma generate",
+    "migrate:deploy": "prisma migrate deploy",
     "seed": "prisma db seed",
     "seed:app": "node src/db/seed.js",
-    "docs:bundle": "redocly bundle docs/openapi.yaml -o public/bundled.yaml"
+    "docs:bundle": "redocly bundle docs/openapi.yaml -o public/bundled.yaml",
+    "postinstall": "prisma generate"
+  },
+  "engines": {
+    "node": ">=18 <=22"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
@@ -24,14 +30,17 @@
     "@prisma/client": "^5.22.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^5.6.0",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "express-rate-limit": "^7.4.0",
+    "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
     "pg": "^8.11.3",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "prisma": "^5.22.0",
-    "@redocly/cli": "^1.28.2"
+    "@redocly/cli": "^1.28.2",
+    "prisma": "^5.22.0"
   }
 }
