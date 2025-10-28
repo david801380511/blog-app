@@ -13,7 +13,7 @@
     "seed": "prisma db seed",
     "seed:app": "node prisma/seed.js",
     "docs:bundle": "redocly bundle docs/openapi.yaml -o public/bundled.yaml",
-    "postinstall": "prisma generate",
+    "postinstall": "npx prisma generate",
     "postbuild": "npm run seed"
   },
   "engines": {
