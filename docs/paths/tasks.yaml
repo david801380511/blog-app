@@ -14,16 +14,12 @@
         content:
           application/json:
             schema:
-              $ref: ../components/schemas.yaml#/Task
+              $ref: ../components/schemas/Task.yaml
       '400':
-        description: Validation error
-        content:
-          application/json:
-            schema:
-              $ref: ../components/schemas.yaml#/ValidationError
+        $ref: ../components/responses/BadRequest.yaml
       '404':
         description: Not found
         content:
           application/json:
             schema:
-              $ref: ../components/schemas.yaml#/NotFoundError
+              $ref: ../components/schemas/NotFoundError.yaml

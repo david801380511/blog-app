@@ -1,0 +1,12 @@
+type: object
+required: [error, details]
+properties:
+  error:
+    type: string
+    example: Validation failed
+  details:
+    type: array
+    items:
+      type: string
+    example:
+      - ID must be a number
