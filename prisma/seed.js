@@ -36,6 +36,7 @@ async function main() {
   const tasksData = [
     { title: "Buy groceries", completed: false },
     { title: "Write report", completed: true },
+    { title: "Read a book", completed: false },
   ];
 
   await Promise.all(tasksData.map((t) => prisma.task.create({ data: t })));
