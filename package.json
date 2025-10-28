@@ -11,9 +11,9 @@
     "prisma:generate": "prisma generate",
     "migrate:deploy": "prisma migrate deploy",
     "seed": "prisma db seed",
-    "seed:app": "node prisma/seed.js",
+    "seed:app": "node src/db/seed.js",
     "docs:bundle": "redocly bundle docs/openapi.yaml -o public/bundled.yaml",
-    "postinstall": "npx prisma generate",
+    "postinstall": "prisma generate",
     "postbuild": "npm run seed"
   },
   "engines": {
@@ -38,10 +38,10 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
     "pg": "^8.11.3",
+    "prisma": "^5.22.0",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "@redocly/cli": "^1.28.2",
-    "prisma": "^5.22.0"
+    "@redocly/cli": "^1.28.2"
   }
 }
