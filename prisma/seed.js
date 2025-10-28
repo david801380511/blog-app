@@ -23,16 +23,13 @@ async function main() {
   await Promise.all(usersData.map(u => prisma.user.create({ data: u })));
 
   // three tasks, deterministic order
-  const tasksData = [
+  const tasks = [
     { title: "Buy groceries", completed: false }, // id = 1
     { title: "Write report",  completed: true  }, // id = 2
-    { title: "Read a book",   completed: false }, // id = 3
   ];
-  for (const t of tasksData) {
-    await prisma.task.create({ data: t });
-  }
+  for (const t of tasks) await prisma.task.create({ data: t });
 
-  console.log("Seed complete: users and tasks created (ids 1..3).");
+  console.log("Seed complete: tasks 1..2 only.");
 }
 
 main().finally(() => prisma.$disconnect());
