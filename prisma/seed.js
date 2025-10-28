@@ -1,4 +1,4 @@
-import { PrismaClient } from "../src/generated/client/index.js";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -30,6 +30,7 @@ async function main() {
     { title: "Buy groceries", completed: false },
     { title: "Write report", completed: true },
   ];
+
   await Promise.all(tasksData.map((t) => prisma.task.create({ data: t })));
 
   console.log("Seed complete: users and tasks created");
