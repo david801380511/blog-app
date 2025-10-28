@@ -30,11 +30,11 @@ async function main() {
   ];
   await Promise.all(usersData.map((u) => prisma.user.create({ data: u })));
 
-  // tasks, deterministic order (ids 1..3)
+  // tasks, deterministic order (ids 1..3) expected by tests/docs
   const tasks = [
-    { title: "Buy groceries", completed: false }, // id = 1
-    { title: "Write report", completed: true },   // id = 2
-    { title: "Read a book", completed: false },   // id = 3
+    { title: "Set up project repository", completed: true }, // id = 1
+    { title: "Install dependencies", completed: true },      // id = 2
+    { title: "Create Task model", completed: false },        // id = 3
   ];
   for (const t of tasks) await prisma.task.create({ data: t });
 
