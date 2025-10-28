@@ -4,9 +4,16 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.post.deleteMany();
-  await prisma.task.deleteMany();
-  await prisma.user.deleteMany();
+  // Reset tables and sequences so ids start from 1
+  // Postgres requires double quotes for mapped table names
+  try {
+    await prisma.$executeRawUnsafe('\n      TRUNCATE TABLE "posts", "tasks", "users" RESTART IDENTITY CASCADE;\n    ');
+  } catch (e) {
+    console.warn('TRUNCATE failed, falling back to deleteMany()', e?.message);
+    await prisma.post.deleteMany();
+    await prisma.task.deleteMany();
+    await prisma.user.deleteMany();
+  }
 
   const usersData = [
     {
