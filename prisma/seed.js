@@ -33,13 +33,15 @@ async function main() {
 
   await Promise.all(usersData.map((user) => prisma.user.create({ data: user })));
 
-  const tasksData = [
-    { title: "Buy groceries", completed: false },
-    { title: "Write report", completed: true },
-    { title: "Read a book", completed: false },
-  ];
+const tasksData = [
+  { title: "Buy groceries", completed: false }, // id = 1
+  { title: "Write report",  completed: true  }, // id = 2
+];
 
-  await Promise.all(tasksData.map((t) => prisma.task.create({ data: t })));
+for (const t of tasksData) {
+  await prisma.task.create({ data: t });
+}
+
 
   console.log("Seed complete: users and tasks created");
 }
