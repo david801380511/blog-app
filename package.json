@@ -8,11 +8,12 @@
     "start": "node src/server.js",
     "build": "npm run docs:bundle",
     "test": "NODE_ENV=test node -e \"import('./src/server.js').then(m=>console.log('app loaded'))\"",
-    "prisma:generate": "node --experimental-modules ./node_modules/.bin/prisma generate",
-    "migrate:deploy": "node --experimental-modules ./node_modules/.bin/prisma migrate deploy",
-    "seed": "node --experimental-modules ./node_modules/.bin/prisma db seed",
+    "prisma:generate": "node ./node_modules/prisma/build/index.js generate",
+    "migrate:deploy": "node ./node_modules/prisma/build/index.js migrate deploy",
+    "seed": "node ./node_modules/prisma/build/index.js db seed",
     "seed:app": "node prisma/seed.js",
     "docs:bundle": "redocly bundle docs/openapi.yaml -o public/bundled.yaml",
+    "postinstall": "node ./node_modules/prisma/build/index.js generate",
     "postbuild": "npm run seed"
   },
   "engines": {
