@@ -32,8 +32,7 @@ process.on('SIGTERM', () => {
 });
 
 // health
-app.get("/health", (_req, res) => res.status(200).json({ ok: true }));
-
+app.get("/", (_req, res) => res.status(200).json({ ok: true }));
 
 app.use("/api/categories", categoryRoutes);
 app.use("/api/posts", postRoutes);
@@ -42,6 +41,9 @@ app.use("/api/auth", authRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/posts", postRoutes);
 app.use("/tasks", taskRoutes);
+
+// JSON 404 for all unmatched routes
+app.use((req, res) => res.status(404).json({ error: "Not found" }));
 
 // Serve bundled OpenAPI spec and Swagger UI
 const __filename = fileURLToPath(import.meta.url);
