@@ -11,7 +11,7 @@
     "prisma:generate": "prisma generate",
     "migrate:deploy": "prisma migrate deploy",
     "seed": "prisma db seed",
-    "seed:app": "node src/db/seed.js",
+    "seed:app": "node prisma/seed.js",
     "docs:bundle": "redocly bundle docs/openapi.yaml -o public/bundled.yaml",
     "postinstall": "prisma generate",
     "postbuild": "npm run seed"
